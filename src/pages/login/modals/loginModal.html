@@ -1,0 +1,13 @@
+<ion-content padding center [ngStyle]="{'display':'flex','align-content':'center','align-items':'center','height':'100%','background-color':'#ec407a'}">
+<form (ngSubmit)="login()" [formGroup]="registerCredentials">
+            <input [ngStyle]="{'background-color':'#009fb3','font-size':'2rem','border-top-right-radius':'10px','border-top-left-radius':'10px','padding':'15px','color':'white','width':'100%','border-style':'none'}"
+              color="white" type="text" placeholder="Username" formControlName="email" />
+
+            <input [ngStyle]="{'background-color':'#009fb3','font-size':'2rem','border-bottom-right-radius':'10px','border-bottom-left-radius':'10px','padding':'15px','color':'white','width':'100%','border-style':'none'}"
+              color="white" type="password" placeholder="Password" formControlName="password" />
+            <br/>
+            <button ion-button color="secondary" [ngStyle]="{'width':'100%','margin':'0.4rem 0.0rem'}" type="submit" [disabled]="!registerCredentials.valid">Login</button>
+
+          
+          </form>
+</ion-content>

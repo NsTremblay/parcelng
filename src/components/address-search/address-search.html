@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="form-group">
+    <ion-item>
+      <input placeholder="{{placeholderText}}" [(ngModel)]="direction" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+      #search [formControl]="searchControl"/> 
+    </ion-item>
+  </div>
+  <div style="width:100%;height:100%" (click)="closeEmpty()"></div>
+</div>
