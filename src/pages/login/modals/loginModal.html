@@ -1,4 +1,4 @@
-<ion-content padding center [ngStyle]="{'display':'flex','align-content':'center','align-items':'center','height':'100%','background-color':'#ec407a'}">
+<!--<ion-content padding center [ngStyle]="{'display':'flex','align-content':'center','align-items':'center','height':'100%','background-color':'#ec407a'}">
 <form (ngSubmit)="login()" [formGroup]="registerCredentials">
             <input [ngStyle]="{'background-color':'#009fb3','font-size':'2rem','border-top-right-radius':'10px','border-top-left-radius':'10px','padding':'15px','color':'white','width':'100%','border-style':'none'}"
               color="white" type="text" placeholder="Username" formControlName="email" />
@@ -10,4 +10,30 @@
 
           
           </form>
+
+
+          
+</ion-content>-->
+
+
+<ion-content class="main" [ngStyle]="{'height':'100%','background-color':'#ec407a'}">
+  <ion-icon name="close" style="margin:10px; font-size: 3rem; color:white" (click)="viewCtrl.dismiss()"></ion-icon>
+
+  <h1 style="color:white; font-weight:400;margin:10px">Login</h1>
+  <!--We need a form with and email and a password and confirmation of password-->
+
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <ion-item color="white" style="background-color:transparent; padding-right:16px">
+      <ion-label color="white" floating>Email</ion-label>
+      <ion-input style="color:white;font-size:3rem" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item color="white" style="background-color:transparent;padding-right:16px">
+      <ion-label color="white" floating>Password</ion-label>
+      <ion-input style="color:white;font-size:3rem" type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <div padding>
+      <button ion-button round outline color="white" type="submit" [disabled]="!loginForm.valid">Login</button>
+    </div>
+  </form>
 </ion-content>

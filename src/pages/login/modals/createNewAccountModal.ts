@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, ModalController, ViewController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../../providers/auth-service/auth-service';
-import { TabsPage } from '../../tabs/tabs';
 
 @Component({
   templateUrl:'./createNewAccountModal.html',
@@ -10,8 +9,11 @@ import { TabsPage } from '../../tabs/tabs';
 export class CreateNewAccountModal {
 
   registrationForm :FormGroup;
+  message:string;
+  
  constructor(public viewCtrl: ViewController,
-  public fb: FormBuilder) {
+  private fb: FormBuilder,
+  private auth: AuthServiceProvider ) {
   this.createForm();
  }
 
@@ -36,6 +38,20 @@ export class CreateNewAccountModal {
         };
       }
     }
+  }
+
+  createAccount(){
+    this.auth.createAccount(this.registrationForm.value).subscribe(r => {
+      console.log(r);
+      if(r==="newUserSuccess"){
+        this.message = "Created the account successfully";
+      }
+    },err=>{
+      console.log(err.json().messaged); 
+      if(err.json().message=="alreadyExist"){
+        this.message = "This user is already registered";
+      }
+    })
   }
 
  dismiss() {

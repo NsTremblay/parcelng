@@ -8,13 +8,13 @@
 -->
 
 <ion-content padding center [ngStyle]="{'display':'flex','align-content':'center','align-items':'center','height':'100%','background-color':'#ec407a'}">
-  <ion-grid>
+  <ion-grid  *ngIf="waitForAskingCredentials==false">
     <ion-row padding>
       <p style="color:white;font-size:3.5rem;text-align:right;width:100%;word-spacing:3.5rem;font-weight:lighter;margin:auto;margin-top:6rem">Welcome to <br><span style="font-size:larger;">Parcel</span></p>
     </ion-row>
     <ion-row>
       <button ion-button round (click)="createANewAccountModal()">Create a new account</button>
-      <button ion-button round outline (click)="loginModal()">Login</button>
+      <button ion-button round outline (click)="loginModal()" color="white">Login</button>
     </ion-row>
   </ion-grid>
 </ion-content>

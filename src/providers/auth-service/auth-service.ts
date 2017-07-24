@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
- 
+import 'rxjs/add/operator/catch';
+import { Storage } from '@ionic/storage';
+
+const connectionString = "http://localhost:8080/";
+
 export class User {
   name: string;
   email: string;
@@ -21,21 +25,35 @@ export class User {
 @Injectable()
 export class AuthServiceProvider {
 
+
   currentUser: User;
- 
-  public login(credentials) {
+  
+  constructor(private http: Http,
+    private storageS: Storage){
+
+  }
+
+  login(credentials) {
+
     console.log(credentials);
+    
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
     } else {
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password === "pass" && credentials.email === "email");
-        this.currentUser = new User('Nicolas', 'ns.tremblay@gmail.com');
-        observer.next(access);
-        observer.complete();
-      });
+      return this.http.post(connectionString+'login', credentials).map(this.mapLogin);
+      // return Observable.create(observer => {
+      //   // At this point make a request to your backend to make a real check!
+      //   let access = (credentials.password === "pass" && credentials.email === "email");
+      //   this.currentUser = new User('Nicolas', 'ns.tremblay@gmail.com');
+      //   observer.next(access);
+      //   observer.complete();
+      // });
     }
+  }
+
+  mapLogin(r:Response){
+    let tr = r.json();
+    return tr || "nothing";
   }
  
   public register(credentials) {
@@ -48,6 +66,30 @@ export class AuthServiceProvider {
         observer.complete();
       });
     }
+  }
+
+  createAccount(credentials):Observable<Object>{
+    return this.http.post(connectionString+"signup", {name:credentials.email,password:credentials.password})
+    
+    .map(this.mapCreateAccount);
+  }
+
+  // handleError(err:Response):string{
+  //   let res = err.json();
+  //   console.log(err)
+  //   if(err.status==401){
+  //     let message = err.json();
+  //     console.log(message.message);
+  //     return err.json();
+  //   }
+  //   return err.json();
+  // }
+
+  mapCreateAccount(response:Response){
+    console.log(response)
+    let res = response.json();
+    
+    return res.message || "";
   }
  
   public getUserInfo() : User {
@@ -62,4 +104,15 @@ export class AuthServiceProvider {
     });
   }
 
+  storeToken(token:string){
+    this.storageS.set("loginToken",token);
+  }
+
+  loginWithToken(token:string):Observable<Response>{
+      let myHeaders = new Headers();
+      myHeaders.append('Authorization', 'JWT '+token);
+      return this.http.post(connectionString+'testToken', {},{headers:myHeaders});
+  }
+
 }
+

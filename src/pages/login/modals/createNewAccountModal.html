@@ -1,11 +1,28 @@
 
-<ion-content class="main" [ngStyle]="{'display':'flex','align-content':'center','align-items':'center','height':'100%','background-color':'#ec407a'}">
-    <p>Create new account modal</p>
-<a (click)="viewCtrl.dismiss()">Close</a>
-
+<ion-content class="main" [ngStyle]="{'height':'100%','background-color':'#ec407a'}">
+    <ion-icon name="close" style="margin:10px; font-size: 4rem; font-weight:200; color:white"(click)="viewCtrl.dismiss()"></ion-icon>
+    
+    <h1 style="color:white; font-weight:400;margin:10px">Create a new account</h1>
 <!--We need a form with and email and a password and confirmation of password-->
 
-<form>
+<form [formGroup]="registrationForm" (ngSubmit)="createAccount()">
 
-</form>
+<ion-item color="white" style="background-color:transparent; padding-right:16px">
+    <ion-label color="white" floating>Email</ion-label>
+    <ion-input style="color:white;font-size:3rem" formControlName="email"></ion-input>
+  </ion-item>
+  <ion-item color="white" style="background-color:transparent;padding-right:16px">
+    <ion-label color="white" floating>Password</ion-label>
+    <ion-input style="color:white;font-size:3rem" type="password" formControlName="password"></ion-input>
+  </ion-item>
+  <ion-item color="white" style="background-color:transparent;padding-right:16px">
+    <ion-label color="white" floating>Confirm Password</ion-label>
+    <ion-input style="color:white;font-size:3rem" type="password" formControlName="confirmPassword" ></ion-input>
+  </ion-item>
+
+  <div padding>
+    <button ion-button round outline color="white" type="submit" [disabled]="!registrationForm.valid">Create Account</button>
+  </div>
+  {{message}}
+</form> 
 </ion-content>

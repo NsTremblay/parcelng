@@ -4,6 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule} from '@angular/forms';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 import { HistoryPage } from '../pages/history/history';
@@ -19,7 +20,7 @@ import { AddressSearchComponent } from '../components/address-search/address-sea
 import { DirectionsMapDirective } from '../directives/directions-map/directions-map';
 import { GoogleMapsAPIWrapper } from 'angular2-google-maps/core/services/google-maps-api-wrapper';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginModal } from '../pages/login/modals/loginModal';
@@ -47,7 +48,8 @@ import { CreateNewAccountModal } from '../pages/login/modals/createNewAccountMod
       libraries: ["places"]
     }),
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonicStorageModule.forRoot()
     
   ], 
   bootstrap: [IonicApp],

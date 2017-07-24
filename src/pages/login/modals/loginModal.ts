@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Loading, ViewController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../../providers/auth-service/auth-service';
 import { TabsPage } from '../../tabs/tabs';
 
@@ -10,7 +10,7 @@ import { TabsPage } from '../../tabs/tabs';
 })
 export class LoginModal {
     loading: Loading;
-    registerCredentials: FormGroup;
+    loginForm: FormGroup;
     constructor(public viewCtrl: ViewController,
         public nav: NavController,
         private auth: AuthServiceProvider,
@@ -22,7 +22,7 @@ export class LoginModal {
     }
 
     buildForm() {
-        this.registerCredentials = this.fb.group({
+        this.loginForm = this.fb.group({
             email: ["", Validators.required],
             password: ["", Validators.required]
         })
@@ -30,9 +30,16 @@ export class LoginModal {
 
     login() {
         this.showLoading()
-        this.auth.login(this.registerCredentials.value).subscribe(allowed => {
-            if (allowed) {
+        this.auth.login({
+                name:this.loginForm.value.email,
+                password:this.loginForm.value.password
+            }).subscribe(allowed => {
+            if (allowed.message=="ok") {
+
+                //store the token
+                this.auth.storeToken(allowed.token);
                 this.nav.setRoot(TabsPage);
+                
                 //this.nav.setRoot('TabsPage');
                 this.loading.dismiss();
             } else {
@@ -40,7 +47,14 @@ export class LoginModal {
             }
         },
             error => {
-                this.showError(error);
+                let sM = error.json().message;
+                if(sM == "an error occured"){
+                    this.showError("Something unexpected happened");
+                }else if(sM == "noUser"){
+                    this.showError("Sorry, we could not find this user, please try a different user");
+                }else{
+                    this.showError("Something unexpected happened");
+                }
             });
     }
 
@@ -56,15 +70,12 @@ export class LoginModal {
         this.loading.dismiss();
 
         let alert = this.alertCtrl.create({
-            title: 'Fail',
+            title: 'Oups',
             subTitle: text,
             buttons: ['OK']
         });
         alert.present(prompt);
     }
-
-
-
 
     dismiss() {
         let data = { 'foo': 'bar' };
